@@ -25,4 +25,6 @@ class BankAccount
 		self.status = "closed"
 	end
 
+	
+
 end
