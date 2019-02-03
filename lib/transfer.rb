@@ -1,5 +1,4 @@
 class Transfer
-  # your code here
 
   attr_accessor :sender, :receiver, :amount, :status
 
@@ -11,25 +10,28 @@ class Transfer
   end
 
   def valid?
-    self.sender.valid? && self.receiver.valid? && self.sender.balance > @amount ? true : false
+    sender.valid? && sender.balance > @amount && receiver.valid? ? true : false
   end
 
   def execute_transaction
-    if self.valid? && self.status == "pending"
-      self.sender.balance -= self.amount
-      self.receiver.balance += self.amount
-      self.status = "complete"
+    if valid? && @status != "complete"
+      @sender.balance -= @amount
+      @receiver.balance += @amount
+      @status = "complete"
     else
-      self.status = "rejected"
+      @status = "rejected"
       "Transaction rejected. Please check your account balance."
     end
   end
 
   def reverse_transfer
-    if self.status == "complete"
-      self.receiver.balance -= self.amount
-      self.sender.balance += self.amount
-      self.status = "reversed"
+    if valid? && @status == "complete"
+      @receiver.balance -= @amount
+      @sender.balance += @amount
+      @status = "reversed"
+    else
+      @status = "rejected"
+      "Transaction rejected. Please check your account balance."
     end
   end
 
